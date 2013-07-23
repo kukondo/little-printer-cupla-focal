@@ -3,6 +3,19 @@
     %title Word of the Day
     %link{href: url("/application.css"), rel: "stylesheet"}
   %body
-    %h1= @word
-    %h2= @definition
-    %p=@example
+    %h1.title
+      %span.big
+        Palabra
+      %br
+      de hoy
+    %p
+      %span#the-word
+        = @word
+      \/#{@pronounciation}/
+      = @type
+      •
+      = @definition
+      %span#example
+        = @example
+
+    %hr
