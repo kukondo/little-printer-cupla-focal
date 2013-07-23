@@ -1,6 +1,6 @@
 require 'bundler'
 Bundler.require
-require 'sinatra/reloader'
+require 'sinatra/reloader' if settings.development?
 
 set :haml, format: :html5
 
