@@ -2,7 +2,7 @@
   "owner_email" : "david@jalada.co.uk",
   "publication_api_version":"1.0",
   "name": "Spanish Word of the Day",
-  "description": "A Word of the Day in Spanish",
+  "description": "A Word of the Day in Spanish with an English translation from spanishdict.com",
   "delivered_on": "every day",
   "send_timezone_info": false,
   "send_delivery_count": false,
