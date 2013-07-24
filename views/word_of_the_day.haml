@@ -4,9 +4,9 @@
     %link{href: url("/application.css"), rel: "stylesheet"}
   %body
     %h1.title
+      %div
       Palabra
-      %br
-      %span.big
+      .big
         de hoy
       %img.dither{src: url("/bar.png")}
     #the-word
@@ -21,5 +21,3 @@
       •
       %span#example
         = @example
-
-    %img#divider.dither{src: url("/bar.png")}
