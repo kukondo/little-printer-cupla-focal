@@ -3,41 +3,45 @@ Bundler.require
 require 'sinatra/reloader' if settings.development?
 
 set :haml, format: :html5
+cache = Dalli::Client.new
 
 feed_url = "http://www.spanishdict.com/wordoftheday/feed"
 
 # Prepares and returns this edition of the publication
-#
-# == Parameters:
-# local_delivery_time
-#   The local time where the subscribed bot is.
 # == Returns:
 # HTML/CSS edition with etag. This publication changes the greeting depending
 # on the time of day. It is using UTC to determine the greeting.
 #
 get '/edition/?' do
 
-  response = Typhoeus::Request.get feed_url
-  if response.success?
-    feed = Nokogiri::XML.parse(response.body)
-    
-    latest_word = feed.css("item").first
-    pieces_of_title = latest_word.at_css("title").text.split(" - ")
-    @word = pieces_of_title[1]
-    @definition = pieces_of_title[2]
-    other = Sanitize.clean(latest_word.at_css("description").text)
-    @pronounciation = other.match(/\((.+?)\)/)[1]
-    @type = other.match(/\(.+?\) (\w+):/)[1]
-    @example = other.match(/:(.+)$/)[1]
+  unless xml = cache.get("feed")
+    response = Typhoeus::Request.get feed_url
+    if response.success?
+      cache.set("feed", response.body, 300)
+      xml = response.body
+    end
+  end
 
-    @guid = latest_word.at_css("guid").text
-
-    etag Digest::MD5.hexdigest(settings.development? ? Time.now.to_s : @guid) 
-    haml :word_of_the_day
-  else
+  unless xml
     status 500
     return "Something went wrong."
   end
+
+  feed = Nokogiri::XML.parse(xml)
+  
+  latest_word = feed.css("item").first
+  pieces_of_title = latest_word.at_css("title").text.split(" - ")
+  @word = pieces_of_title[1]
+  @definition = pieces_of_title[2]
+  other = Sanitize.clean(latest_word.at_css("description").text)
+  @pronounciation = other.match(/\((.+?)\)/)[1]
+  @type = other.match(/\(.+?\) (\w+):/)[1]
+  @example = other.match(/:(.+)$/)[1]
+
+  @guid = latest_word.at_css("guid").text
+
+  etag Digest::MD5.hexdigest(settings.development? ? Time.now.to_s : @guid) 
+  haml :word_of_the_day
 end
 
 
