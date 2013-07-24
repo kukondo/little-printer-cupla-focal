@@ -4,19 +4,22 @@
     %link{href: url("/application.css"), rel: "stylesheet"}
   %body
     %h1.title
+      Palabra
+      %br
       %span.big
-        Palabra
-      %br
-      de hoy
+        de hoy
+      %img{src: url("/bar.png")}
+    #the-word
+      .word=@word
+      .definition
+        \/#{@pronounciation}/
+        •
+        %span.type= @type
+
     %p
-      %span#the-word
-        = @word
-      \/#{@pronounciation}/
-      = @type
-      %br
       = @definition
       •
       %span#example
         = @example
 
-    %hr
+    %img#divider{src: url("/bar.png")}
