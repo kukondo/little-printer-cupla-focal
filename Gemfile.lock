@@ -37,7 +37,7 @@ GEM
     sinatra-reloader (1.0)
       sinatra-contrib
     thin (1.6.4)
-      rack (~> 1.0) 
+      rack (>= 1.5.2) 
       eventmachine (>= 1.0.4) 
       daemons (>= 1.0.9)
     tilt (1.4.1)
