@@ -1,8 +1,8 @@
 {
-  "owner_email" : "david@jalada.co.uk",
+  "owner_email" : "ciaran@kukondo.com",
   "publication_api_version":"1.0",
-  "name": "Spanish word of the day",
-  "description": "A word of the day in Spanish with an English translation. Content from spanishdict.com.",
+  "name": "Cúpla Focal",
+  "description": "A word of the day as Gaelige with a translation as Bearla. Content from transparent.com.",
   "delivered_on": "every day",
   "send_timezone_info": false,
   "send_delivery_count": false,
