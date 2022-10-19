@@ -5,7 +5,7 @@ require 'sinatra/reloader' if settings.development?
 set :haml, format: :html5
 cache = Dalli::Client.new
 
-feed_url = "http://www.spanishdict.com/wordoftheday/feed"
+feed_url = "https://feeds.feedblitz.com/irish-word-of-the-day"
 
 # Prepares and returns this edition of the publication
 # == Returns:
@@ -29,12 +29,14 @@ get '/edition/?' do
 
   feed = Nokogiri::XML.parse(xml)
   
-  latest_word = feed.css("item").first
-  pieces_of_title = latest_word.at_css("title").text.split(" - ")
+  latest_word = feed.css("a").first
+  pieces_of_title = latest_word.at_css("title").text.split(": ")
   @word = pieces_of_title[1]
   @definition = pieces_of_title[2]
   other = Sanitize.clean(latest_word.at_css("description").text)
-  @pronounciation = other.match(/\((.+?)\)/)[1]
+  # Not available at present as Gaelige
+  # @pronounciation = other.match(/\((.+?)\)/)[1]
+  #
   @type = other.match(/\(.+?\) (\w+):/)[1]
   @example = other.match(/:(.+)$/)[1]
 
@@ -54,11 +56,13 @@ end
 # HTML/CSS edition with etag. This publication changes the greeting depending on the time of day. It is using UTC to determine the greeting.
 #
 get '/sample/?' do
-  @word = "celeste"
-  @definition = "heavenly, sky-blue"
-  @pronounciation = "seh-leh'-steh"
-  @type = "adjective"
-  @example = "Te queda mejor el vestido celeste para la fiesta. - The sky-blue dress looks better on you for the party."
+  @word = "a thuiscint"
+  @definition = "to understand"
+  #Not available at present as Gaelige  
+  # @pronounciation = ""
+  #
+  @type = "verb"
+  @example = "Is deacair dom an Ghaeilge a thuiscint. - Understanding Irish is difficult for me."
   
   # Set the etag to be this content
   haml :word_of_the_day
