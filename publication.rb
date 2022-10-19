@@ -5,7 +5,7 @@ require 'sinatra/reloader' if settings.development?
 set :haml, format: :html5
 cache = Dalli::Client.new
 
-feed_url = "https://feeds.feedblitz.com/irish-word-of-the-day"
+feed_url = "https://feeds.feedblitz.com/irish-word-of-the-day/"
 
 # Prepares and returns this edition of the publication
 # == Returns:
